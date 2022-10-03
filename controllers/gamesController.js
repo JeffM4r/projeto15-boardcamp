@@ -1,18 +1,20 @@
-import connection from "../db/database";
+import connection from "../db/database.js";
 
 async function list(req, res) {
     const { name } = req.query
 
     try {
-        const db = connection();
+        const db = await connection();
+        
         if (name) {
-            const ganmesName = await db.query(`SELECT * FROM games WHERE name ILIKE $1;`, [name])
-            res.status(200).send(ganmesName.rows)
+            const gamesName = await db.query(`SELECT * FROM games WHERE name ILIKE $1;`, [name + "%"])
+            res.status(200).send(gamesName.rows)
             return
         }
 
-        const games = await db.query(`SELECT * FROM games;`)
-        res.status(200).send(games.rows)
+        const allGames = await db.query(`SELECT games.id,games.image,games."stockTotal",games.name,games."pricePerDay",games."categoryId",categories.name as "categoryName" FROM games JOIN categories ON games."categoryId" = categories.id;`)
+        
+        res.status(200).send(allGames.rows)
         return
 
     } catch (error) {
