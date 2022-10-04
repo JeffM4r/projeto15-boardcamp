@@ -1,7 +1,7 @@
 import connection from "../db/database.js";
 
 async function list(req, res){
-
+    
     try{
         const db = await connection();
         const categories = await db.query("SELECT * FROM categories;");

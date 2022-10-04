@@ -1,9 +1,9 @@
 import express from "express";
 import cors from "cors";
-import categoriesRouter from "./routes/categoriesRouter.js";
-import gamesRouter from "./routes/gamesRouter.js";
-import customersRouter from "./routes/customersRouter.js";
-import rentRouter from "./routes/rentalsRouter.js";
+import categoriesRouter from "../routes/categoriesRouter.js";
+import gamesRouter from "../routes/gamesRouter.js";
+import customersRouter from "../routes/customersRouter.js";
+import rentRouter from "../routes/rentalsRouter.js";
 
 const server = express();
 

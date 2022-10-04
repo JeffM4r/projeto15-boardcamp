@@ -59,7 +59,6 @@ async function list(req, res) {
 
         }
 
-        console.log(list.rows)
         const rentalsList = list.rows.map(item => {
             return {
                 id: item.id,
@@ -102,8 +101,7 @@ async function create(req, res) {
     try {
         const db = await connection()
         const game = await db.query("SELECT * FROM games WHERE id=$1;", [rentItens.gameId])
-        console.log(game.rows)
-        console.log(rentItens)
+
         await db.query(`INSERT INTO rentals ("customerId","gameId","rentDate","daysRented","returnDate","originalPrice","delayFee") VALUES ($1,$2,$3,$4,$5,$6,$7)`,
             [rentItens.customerId, rentItens.gameId, date, rentItens.daysRented, null, (game.rows[0].pricePerDay * rentItens.daysRented), null]
         )
@@ -149,7 +147,7 @@ async function deleteRoute(req, res) {
     const id = req.params
     try {
         const db = await connection()
-        console.log(id)
+
         await db.query("DELETE FROM rentals WHERE id=$1;", [id.id])
         res.sendStatus(200)
         return

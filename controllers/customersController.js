@@ -41,7 +41,6 @@ async function create(req, res) {
             res.sendStatus(409)
             return
         }
-        console.log("epa")
         await db.query(`INSERT INTO customers ("name","cpf","phone","birthday") VALUES ($1,$2,$3,$4);`, [client.name, client.cpf, client.phone, client.birthday])
         res.sendStatus(201)
         return
