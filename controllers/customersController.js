@@ -12,7 +12,7 @@ async function list(req, res) {
                 res.sendStatus(404)
                 return
             }
-            res.status(200).send(client.rows)
+            res.status(200).send(client.rows[0])
             return
         }
 
@@ -33,14 +33,15 @@ async function list(req, res) {
 
 async function create(req, res) {
     const client = req.body
-    const clientFound = res.locals.clientFound
+    const clientFound = ""
     try {
-        const db = await connection()
+        const db = await connection();
+        
         if (clientFound.length !== 0) {
             res.sendStatus(409)
             return
         }
-
+        console.log("epa")
         await db.query(`INSERT INTO customers ("name","cpf","phone","birthday") VALUES ($1,$2,$3,$4);`, [client.name, client.cpf, client.phone, client.birthday])
         res.sendStatus(201)
         return
