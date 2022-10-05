@@ -3,6 +3,7 @@ import connection from "../db/database.js";
 async function list(req, res) {
     const { cpf } = req.query
     const { id } = req.params
+
     try {
         const db = await connection();
 
@@ -17,7 +18,8 @@ async function list(req, res) {
         }
 
         if (cpf) {
-            const client = await db.query(`SELECT * FROM customers WHERE cpf = $1;`, [cpf])
+            const string = cpf.toString()
+            const client = await db.query(`SELECT * FROM customers WHERE cpf LIKE $1;`, [string + "%"])
             res.status(200).send(client.rows)
             return
         }
@@ -32,15 +34,11 @@ async function list(req, res) {
 }
 
 async function create(req, res) {
-    const client = req.body
-    const clientFound = ""
+    const client = res.locals.client
+
     try {
         const db = await connection();
         
-        if (clientFound.length !== 0) {
-            res.sendStatus(409)
-            return
-        }
         await db.query(`INSERT INTO customers ("name","cpf","phone","birthday") VALUES ($1,$2,$3,$4);`, [client.name, client.cpf, client.phone, client.birthday])
         res.sendStatus(201)
         return
@@ -53,7 +51,7 @@ async function create(req, res) {
 
 async function update(req, res) {
     const { id } = req.params
-    const clientUpdate = req.body
+    const clientUpdate = res.locals.client
 
     try {
         const db = await connection()

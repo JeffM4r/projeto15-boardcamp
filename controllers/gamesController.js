@@ -23,7 +23,7 @@ async function list(req, res) {
 }
 
 async function create(req, res) {
-    const game = req.body
+    const game = res.locals.gameForm
 
     try {
         const db = await connection();
